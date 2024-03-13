@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 다운받은 echarts 파일 -->
+    <!-- <script src="echarts.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+</head>
+<body>
+<!-- 높이와 너비가 지정된 Dom 을 생성합니다 -->
+<div id="main" style="width: 3dimensions 00px;height:200px;"></div>
+<!-- <div id="main1" style="width: 500px;height:200px;"></div>
+<div id="main2" style="width: 300px;height:200px;"></div> -->
+<div id="main3" style="width: 400px;height:300px;"></div>
+<div id="main4" style="width: 400px;height:300px;"></div>
+    <script type="text/javascript">
+        // DOM을 준비하고 echart 객체를 만듭니다.
+        var myChart = echarts.init(document.getElementById('main'));
+        // var myChart1 = echarts.init(document.getElementById('main1'));
+        // var myChart2 = echarts.init(document.getElementById('main2'));
+        var myChart3 = echarts.init(document.getElementById('main3'));
+        var myChart4 = echarts.init(document.getElementById('main4'));
+
+        const data = genData(50);
+        // 차트 속성과 데이터를 지정합니다.
+        var option1 = {
+            title: {
+                text: '첫번째 pie 테스트',
+                subtext: '보조 타이틀',
+                left: 'right',
+                textStyle: {
+                    // color: '#999',
+                    // fontWeight: 'normal',
+                    fontSize: 24
+                }
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical', //horizontal
+                left: 'left',
+                data: data.legendData
+            },
+            series: [
+                {
+                name: 'series name',
+                type: 'pie',
+
+                label: {
+                    position: 'outer',
+                    fontSize: 8,
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                radius: '70%',
+                // top: top + '%',
+                height: '100%',
+                width: 'auto',
+                data: [
+                    { value: 350, name: '50이하' },
+                    { value: 735, name: '60' },
+                    { value: 580, name: '70' },
+                    { value: 484, name: '80' },
+                    { value: 300, name: '90이상' }
+                ],
+                // data: data.seriesData,
+                labelLine: {
+                    length: 15,
+                    length2: 0,
+                    maxSurfaceAngle: 80
+                },
+                labelLayout: function (params) {
+                    const isLeft = params.labelRect.x < myChart.getWidth() / 2;
+                    const points = params.labelLinePoints;
+                    // Update the end point.
+                    points[2][0] = isLeft
+                    ? params.labelRect.x
+                    : params.labelRect.x + params.labelRect.width;
+                    return {
+                    labelLinePoints: points
+                    };
+                },
+                emphasis: {
+                    itemStyle: {
+                    shadowBlur: 1,
+                    shadowOffsetX: 50,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+                }
+            ]
+            };
+
+            var option2 = {
+                dataset: [
+                    {
+                    source: [
+                        ['Product', 'Sales', 'Price', 'Year'],
+                        ['Cake', 123, 32, 2011],
+                        ['Cereal', 231, 14, 2011],
+                        ['Tofu', 235, 5, 2011],
+                        ['Dumpling', 341, 25, 2011],
+                        ['Biscuit', 122, 29, 2011],
+                        ['Cake', 143, 30, 2012],
+                        ['Cereal', 201, 19, 2012],
+                        ['Tofu', 255, 7, 2012],
+                        ['Dumpling', 241, 27, 2012],
+                        ['Biscuit', 102, 34, 2012],
+                        ['Cake', 153, 28, 2013],
+                        ['Cereal', 181, 21, 2013],
+                        ['Tofu', 395, 4, 2013],
+                        ['Dumpling', 281, 31, 2013],
+                        ['Biscuit', 92, 39, 2013],
+                        ['Cake', 223, 29, 2014],
+                        ['Cereal', 211, 17, 2014],
+                        ['Tofu', 345, 3, 2014],
+                        ['Dumpling', 211, 35, 2014],
+                        ['Biscuit', 72, 24, 2014]
+                    ]
+                    },
+                    {
+                    transform: {
+                        type: 'filter',
+                        config: { dimension: 'Year', value: 2011 }
+                    }
+                    },
+                    {
+                    transform: {
+                        type: 'filter',
+                        config: { dimension: 'Year', value: 2012 }
+                    }
+                    },
+                    {
+                    transform: {
+                        type: 'filter',
+                        config: { dimension: 'Year', value: 2013 }
+                    }
+                    }
+                ],
+                series: [
+                    {
+                    type: 'pie',
+                    radius: 50,
+                    center: ['50%', '25%'],
+                    datasetIndex: 1
+                    },
+                    {
+                    type: 'pie',
+                    radius: 50,
+                    center: ['50%', '50%'],
+                    datasetIndex: 2
+                    },
+                    {
+                    type: 'pie',
+                    radius: 50,
+                    center: ['50%', '75%'],
+                    datasetIndex: 3
+                    }
+                ],
+                // Optional. Only for responsive layout:
+                media: [
+                    {
+                    query: { minAspectRatio: 1 },
+                    option: {
+                        series: [
+                        { center: ['30%', '50%'] },
+                        { center: ['60%', '50%'] },
+                        { center: ['90%', '50%'] }
+                        ]
+                    }
+                    },
+                    {
+                    option: {
+                        series: [
+                        { center: ['80%', '80%'] },
+                        { center: ['80%', '80%'] },
+                        { center: ['80%', '80%'] }
+                        ]
+                    }
+                    }
+                ]
+                };
+        
+                var option3 = {
+                legend: {},
+                tooltip: {
+                trigger: 'axis',
+                showContent: false
+                },
+                dataset: {
+                source: [
+                    ['product', '2012', '2013', '2014', '2015', '2016', '2017'],
+                    ['Milk Tea', 56.5, 82.1, 88.7, 70.1, 53.4, 85.1],
+                    ['Matcha Latte', 51.1, 51.4, 55.1, 53.3, 73.8, 68.7],
+                    ['Cheese Cocoa', 40.1, 62.2, 69.5, 36.4, 45.2, 32.5],
+                    ['Walnut Brownie', 25.2, 37.1, 41.2, 18, 33.9, 49.1]
+                ]
+                },
+                xAxis: { type: 'category' },
+                yAxis: { gridIndex: 0 },
+                grid: { top: '55%' },
+                series: [
+                {
+                    type: 'line',
+                    smooth: true,
+                    seriesLayoutBy: 'row',
+                    emphasis: { focus: 'series' }
+                },
+                {
+                    type: 'line',
+                    smooth: true,
+                    seriesLayoutBy: 'row',
+                    emphasis: { focus: 'series' }
+                },
+                {
+                    type: 'line',
+                    smooth: true,
+                    seriesLayoutBy: 'row',
+                    emphasis: { focus: 'series' }
+                },
+                {
+                    type: 'line',
+                    smooth: true,
+                    seriesLayoutBy: 'row',
+                    emphasis: { focus: 'series' }
+                },
+                {
+                    type: 'pie',
+                    id: 'pie',
+                    radius: '30%',
+                    center: ['50%', '25%'],
+                    emphasis: {
+                    focus: 'self'
+                    },
+                    label: {
+                    formatter: '{b}: {@2012} ({d}%)'
+                    },
+                    encode: {
+                    itemName: 'product',
+                    value: '2012',
+                    tooltip: '2012'
+                    }
+                }
+                ]
+            };
+            myChart.on('updateAxisPointer', function (event) {
+                const xAxisInfo = event.axesInfo[0];
+                if (xAxisInfo) {
+                const dimension = xAxisInfo.value + 1;
+                myChart.setOption({
+                    series: {
+                    id: 'pie',
+                    label: {
+                        formatter: '{b}: {@[' + dimension + ']} ({d}%)'
+                    },
+                    encode: {
+                        value: dimension,
+                        tooltip: dimension
+                    }
+                    }
+                });
+                }
+            });
+
+            var option4 = {
+                tooltip: {
+                    trigger: 'item',
+                    axisPointer: {
+                    // Use axis to trigger tooltip
+                    type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+                    }
+                },
+                legend: {},
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                yAxis : {
+                    type: 'value'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['생산대수', '지연전월', '지연금월']
+                },
+                series: [
+                    {
+                    name: '생산대수',
+                    type: 'bar',
+                    stack: 'total',
+                    label: {
+                        show: true
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [70, 0, 0, 0]
+                    },
+                    {
+                    name: '지연전월',
+                    type: 'bar',
+                    stack: 'total',
+                    label: {
+                        show: true
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [0, 10, 20, 30]
+                    },
+                    {
+                    name: 'Affiliate Ad',
+                    type: 'bar',
+                    stack: 'total',
+                    label: {
+                        show: true
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [0, 18, 15]
+                    },
+                    {
+                    name: 'Video Ad',
+                    type: 'bar',
+                    stack: 'total',
+                    label: {
+                        show: true
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [0, 30, 20]
+                    },
+                    {
+                    name: 'Search Engine',
+                    type: 'bar',
+                    stack: 'total',
+                    label: {
+                        show: true
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: [0, 20, 10]
+                    }
+                ]
+                };
+
+                var option5 = {
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                        type: 'shadow'
+                        }
+                    },
+                    legend: {},
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                        type: 'category',
+                        data: ['HHI']
+                        }
+                    ],
+                    yAxis: [
+                        {
+                        type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                        name: '생산대수',
+                        type: 'bar',
+                        label: {show: true},
+                        stack: '생산대수',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [70]
+                        },
+                        {
+                        name: '10일이하',
+                        type: 'bar',
+                        label: {show: true},
+                        stack: '지연전월',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [3]
+                        },
+                        {
+                        name: '10일초과',
+                        type: 'bar',
+                        label: {show: true},
+                        stack: '지연전월',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [8]
+                        },
+                        {
+                        name: '20일초과',
+                        type: 'bar',
+                        label: {show: true},
+                        stack: '지연전월',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [10]
+                        },
+                        {
+                        name: '30일초과',
+                        type: 'bar',
+                        label: {show: true},
+                        stack: '지연전월',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [10]
+                        },
+                        {
+                        name: '10일이하',
+                        type: 'bar',
+                        label: {show: true},
+                        stack: '지연금월',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [10]
+                        },
+                        {
+                        name: '10일초과',
+                        type: 'bar',
+                        label: {show: true},
+                        stack: '지연금월',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [15]
+                        },
+                        {
+                        name: '20일초과',
+                        type: 'bar',
+                        label: {show: true},
+                        stack: '지연금월',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [20]
+                        },
+                        {
+                        name: '30일초과',
+                        type: 'bar',
+                        label: {show: true},
+                        stack: '지연금월',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [23]
+                        }
+                    ]
+                    };
+
+                    var option6 = {
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                            type: 'shadow'
+                            }
+                        },
+                        legend: {},
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis: [
+                            {
+                            type: 'category',
+                            data: ['HHI']
+                            }
+                        ],
+                        yAxis: [
+                            {
+                            type: 'value'
+                            }
+                        ],
+                        series: [
+                            {
+                            name: '생산대수',
+                            type: 'bar',
+                            label: {
+                                show: true
+                            },
+                            stack: '생산대수',
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: [70]
+                            },
+                            {
+                            name: '생산대수SUM',
+                            type: 'bar',
+                            legend:{show: false},
+                            label: {
+                                show: true,
+                                position: 'top'
+                            },
+                            stack: '생산대수',
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: [0]
+                            },
+                            {
+                            name: '10일이하',
+                            type: 'bar',
+                            label: {show: true},
+                            stack: '지연전월',
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: [3]
+                            },
+                            {
+                            name: '10일초과',
+                            type: 'bar',
+                            label: {show: true},
+                            stack: '지연전월',
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: [8]
+                            },
+                            {
+                            name: '20일초과',
+                            type: 'bar',
+                            label: {show: true},
+                            stack: '지연전월',
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: [10]
+                            },
+                            {
+                            name: '30일초과',
+                            type: 'bar',
+                            label: {show: true},
+                            stack: '지연전월',
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: [10]
+                            },
+                            {
+                            name: '10일이하',
+                            type: 'bar',
+                            label: {show: true},
+                            stack: '지연금월',
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: [10]
+                            },
+                            {
+                            name: '10일초과',
+                            type: 'bar',
+                            label: {show: true},
+                            stack: '지연금월',
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: [15]
+                            },
+                            {
+                            name: '20일초과',
+                            type: 'bar',
+                            label: {show: true},
+                            stack: '지연금월',
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: [20]
+                            },
+                            {
+                            name: '30일초과',
+                            type: 'bar',
+                            label: {show: true},
+                            stack: '지연금월',
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            data: [23]
+                            }
+                        ]
+                        };
+
+                        
+                        function genData(count) {
+  // prettier-ignore
+  const nameList = [
+'가', '나', '다', '마', '바', '사', '아', '자', '차', '카', '타', '파', '하'
+    ];
+  const legendData = [];
+  const seriesData = [];
+  for (var i = 0; i < count; i++) {
+    var name =
+      Math.random() > 0.65
+        ? makeWord(4, 1) + '·' + makeWord(3, 0)
+        : makeWord(2, 1);
+    legendData.push(name);
+    seriesData.push({
+      name: name,
+      value: Math.round(Math.random() * 100000)
+    });
+  }
+  return {
+    legendData: legendData,
+    seriesData: seriesData
+  };
+  function makeWord(max, min) {
+    const nameLen = Math.ceil(Math.random() * max + min);
+    const name = [];
+    for (var i = 0; i < nameLen; i++) {
+      name.push(nameList[Math.round(Math.random() * nameList.length - 1)]);
+    }
+    return name.join('');
+  }
+}
+
+        // 위에서 설정한 속성을 차트에 반영합니다.
+        myChart.setOption(option1);
+        // myChart1.setOption(option2);
+        // myChart2.setOption(option3);
+        myChart3.setOption(option4);
+        myChart4.setOption(option5);
+    </script>
+    </body>
+</html>
